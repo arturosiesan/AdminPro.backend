@@ -9,21 +9,16 @@ const app = express();
 // Config CORS
 app.use( cors() );
 
+// Read and parse body
+app.use( express.json() );
+
 // Database
 dbConnection();
 
-//mean_user
-//X38NCE6WDDKfANOv
-
 // Routes
-app.get( '/', (req, res) => {
+app.use( '/api/users', require('./routes/users.routes') );
+app.use( '/api/login', require('./routes/auth.routes') );
 
-    res.json({
-        ok: true,
-        message: "Hello World!"
-    });
-
-});
 
 app.listen( process.env.PORT, () => {
     console.log('Run server on port ' + process.env.PORT)
