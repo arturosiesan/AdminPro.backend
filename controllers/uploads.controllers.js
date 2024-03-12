@@ -72,8 +72,6 @@ const getImagen = async (req, res = response) => {
 
     const pathImg = path.join( __dirname, `../uploads/${table}/${id}` );
 
-    console.log(fs.existsSync(pathImg))
-
     if( !fs.existsSync(pathImg) ) {
         const pathImg = path.join( __dirname, `../uploads/no-image.jpg` );
         return res.sendFile( pathImg ) 

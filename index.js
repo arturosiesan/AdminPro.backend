@@ -9,6 +9,8 @@ const app = express();
 // Config CORS
 app.use( cors() );
 
+app.use( express.static('public') );
+
 // Read and parse body
 app.use( express.json() );
 
