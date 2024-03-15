@@ -13,14 +13,18 @@ router.post( '/',
     [
         validateJWT,
         check('name', 'The name is required').not().isEmpty(),
-        check('hospital', 'The hospital id is not valid').isMongoId(),
         validateInputs
     ],
     createDoctors 
 );
 
 router.put( '/:id',
-    [],
+    [
+        validateJWT,
+        check('name', 'The name is required').not().isEmpty(),
+        check('hospital', 'The hospital is required').not().isEmpty(),
+        validateInputs
+    ],
     updateDoctors
 );
 

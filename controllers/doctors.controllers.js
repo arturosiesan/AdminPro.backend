@@ -28,8 +28,8 @@ const getDoctors = async ( req, res = response ) => {
 const createDoctors = async ( req, res = response ) => {
 
     try {
-        const hospitalId = req.body.hospital;
-        const existHospital = await Hospital.findById(hospitalId);
+        const doctorId = req.body.hospital;
+        const existHospital = await Hospital.findById(doctorId);
 
         if ( !existHospital ) {
             return res.status(403).json({
@@ -60,20 +60,73 @@ const createDoctors = async ( req, res = response ) => {
     }
 
 }
-const updateDoctors = ( req, res = response ) => {
+const updateDoctors = async ( req, res = response ) => {
 
-    res.json({
-        ok: true,
-        message: 'updateDoctors'
-    });
+    const doctorId = req.params.id;
+    const uid = req.uid;
+
+    try {
+        
+        const doctor = await Doctor.findById( doctorId );
+
+        if( !doctor ) {
+            return res.status(400).json({
+                ok: false,
+                message: 'Doctor not found with id'
+            })
+        }
+
+        const changeDoctor = {
+            user: uid,
+            ...req.body
+        }
+
+        const updateDoctor = await Doctor.findByIdAndUpdate( doctorId, changeDoctor, { new: true });
+
+
+        res.json({
+            ok: true,
+            doctor: updateDoctor
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            message: "Unexpected error, check logs"
+        });
+    }
 
 }
-const deleteDoctors = ( req, res = response ) => {
+const deleteDoctors = async ( req, res = response ) => {
 
-    res.json({
-        ok: true,
-        message: 'deleteDoctors'
-    });
+    const doctorId = req.params.id;
+
+    try {
+        
+        const doctor = await Doctor.findById( doctorId );
+
+        if( !doctor ) {
+            return res.status(400).json({
+                ok: false,
+                message: 'Doctor not found with id'
+            })
+        }
+
+        await Doctor.findByIdAndDelete( doctorId );
+
+        res.json({
+            ok: true,
+            message: 'Doctor deleted'
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            message: "Unexpected error, check logs"
+        });
+    }
 
 }
 

@@ -89,6 +89,29 @@ const googleSignIn = async (req, res = response) => {
 
 }
 
+const renewToken = async (req, res = response) => {
+
+    const uid = req.uid;
+
+    try {
+
+        const token = await generateJWT( uid );
+
+        res.json({
+            ok: true,
+            token
+        })
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            ok: false,
+            message: "Unexpected error, check logs"
+        })
+    }
+
+}
+
 // const googleSignInAuto = async (req, res = response) => {
 
 //     try {
@@ -139,5 +162,6 @@ const googleSignIn = async (req, res = response) => {
 module.exports = {
     login,
     googleSignIn,
+    renewToken,
     // googleSignInAuto
 }
